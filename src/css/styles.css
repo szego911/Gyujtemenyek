@@ -1,0 +1,23 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 1rem;
+  margin: 2rem;
+}
+a {
+  cursor: pointer !important;
+}
+
+.selected-collection {
+  display: none;
+}
+
+.itemCard {
+  max-width: 25rem;
+}
+.logo {
+  max-width: 200px;
+}
+.bg-mozaik {
+  background-color: #1e539d !important;
+}

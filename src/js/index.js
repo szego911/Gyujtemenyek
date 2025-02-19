@@ -1,30 +1,39 @@
 let collections = [];
 let items = [];
 
-fetch("http://localhost:8080/collections")
-  .then((response) => response.json())
-  .then((collectionsData) => {
-    collectionsData.forEach((collection) => collections.push(collection));
-  });
-
-fetch("http://localhost:8080/items")
-  .then((response) => response.json())
-  .then((itemsData) => {
-    itemsData.forEach((item) => items.push(item));
-  });
-
-console.log(items);
-console.log(collections);
-
 const cardsContainer = document.querySelector(".cards-container");
 const heroContainer = document.querySelector(".hero");
+const selectedCollectionElement = document.querySelector(
+  ".selected-collection"
+);
+const loadingSpinner = document.getElementById("loading");
+
+async function fetchCollections() {
+  try {
+    let response = await fetch("http://localhost:8080/collections");
+    let data = await response.json();
+    collections = data;
+  } catch (error) {
+    console.error("Hiba történt az adatok lekérésekor:", error);
+  }
+}
+
+async function fetchItems() {
+  try {
+    let response = await fetch("http://localhost:8080/items");
+    let data = await response.json();
+    items = data;
+  } catch (error) {
+    console.error("Hiba történt az adatok lekérésekor:", error);
+  }
+}
+
 const renderCard = () => {
   collections.map((collection) => {
-    console.log(collection);
     const cardElement = document.createElement("div");
     cardElement.innerHTML = `
     <div class="card p-3">
-        <img src="../assets/Diplomatico.png" class="card-img-top" alt="..."/>
+        <img src="./src/assets/images/Diplomatico.png" class="card-img-top" alt="..."/>
         <div class="card-body">
             <h5 class="card-title">${collection.name}</h5>
             <p class="card-text">${collection.theme}</p>
@@ -40,7 +49,6 @@ const renderCard = () => {
     });
   });
 };
-renderCard();
 
 function addOrUpdateURLParam(key, value) {
   const searchParams = new URLSearchParams(window.location.search);
@@ -50,12 +58,8 @@ function addOrUpdateURLParam(key, value) {
   history.pushState(null, "", newRelativePathQuery);
 }
 
-const selectedCollectionElement = document.querySelector(
-  ".selected-collection"
-);
-
 function openCollection(collectionName) {
-  addOrUpdateURLParam("collection", collectionName);
+  //addOrUpdateURLParam("collection", collectionName);
   const selectedCollection = collections.find(
     (collection) => collection.name == collectionName
   );
@@ -69,7 +73,7 @@ function openCollection(collectionName) {
       const collectionItem = document.createElement("div");
       collectionItem.innerHTML = `
     <div class="card itemCard p-3">
-        <img src="/assets/images/Diplomatico.png" class="card-img-top" alt="..."/>
+        <img src="./src/assets/images/Diplomatico.png" class="card-img-top" alt="..."/>
         <div class="card-body">
             <h5 class="card-title">${item.name}</h5>
             <button id="updateBtn" class="btn btn-secondary">Szerkesztés</button>
@@ -93,3 +97,11 @@ function openCollection(collectionName) {
   });
   selectedCollectionElement.style.display = "grid";
 }
+
+fetchCollections();
+fetchItems();
+
+setTimeout(() => {
+  loadingSpinner.style.display = "none";
+  renderCard();
+}, 1000);

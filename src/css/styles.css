@@ -1,7 +1,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 1rem;
+  grid-gap: 2rem;
   margin: 2rem;
 }
 a {
@@ -13,11 +13,14 @@ a {
 }
 
 .itemCard {
-  max-width: 25rem;
+  max-width: 22rem;
 }
 .logo {
   max-width: 200px;
 }
 .bg-mozaik {
   background-color: #1e539d !important;
+}
+.text-mozaik {
+  color: #1e539d !important;
 }

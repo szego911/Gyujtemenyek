@@ -109,6 +109,7 @@
             <div class="input-group mb-3">
               <input
                 type="text"
+                id="name"
                 class="form-control"
                 placeholder="Cím"
                 aria-label="Username"
@@ -118,6 +119,7 @@
             <div class="input-group mb-3">
               <input
                 type="text"
+                id="theme"
                 class="form-control"
                 placeholder="Témakör"
                 aria-label="Username"
@@ -127,6 +129,7 @@
             <div class="input-group mb-3">
               <input
                 type="date"
+                id="date"
                 class="form-control"
                 aria-describedby="basic-addon1"
               />
@@ -140,10 +143,23 @@
             >
               Bezár
             </button>
-            <button type="button" class="btn btn-primary">Létrehozás</button>
+            <button id="newCollButton" type="button" class="btn btn-primary">
+              Létrehozás
+            </button>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+
+      <strong>Siker!</strong> Új gyűjtemény létrehozva
     </div>
 
     <script type="module" src="./src/js/index.js"></script>

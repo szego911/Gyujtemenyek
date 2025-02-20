@@ -106,15 +106,13 @@ const formatDate = (date) => {
   return formattedDate;
 };
 
-function insertCollection(collectionElement) {
+export async function insertCollection() {
   //TODO: validate data
-  const name = collectionElement.name;
-  const theme = collectionElement.theme;
-  const date = collectionElement.date;
+  const name = document.getElementById("name").value;
+  const theme = document.getElementById("theme").value;
+  const date = document.getElementById("date").value;
 
-  //console.log(collectionElement);
-
-  fetch(url + "/insertcollection", {
+  await fetch(url + "/insertcollection", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -123,13 +121,13 @@ function insertCollection(collectionElement) {
       name: name,
       theme: theme,
       date: date,
+      collectionId: 8,
     }),
   })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
-      //document.getElementById("result").innerHTML = JSON.stringify(result);
-      // Display the API response in the "result" div
+    .then((response) => {
+      if (response.status === 200) {
+        new Alert("Gyűjtemény sikeresen létrehozva!");
+      }
     })
     .catch((error) => {
       console.error(error);
@@ -137,7 +135,7 @@ function insertCollection(collectionElement) {
     });
 }
 
-function insertItem(itemElement) {
+export function insertItem(itemElement) {
   //TODO: validate data
   const name = itemElement.name;
   const collectionId = itemElement.collectionId;
@@ -164,16 +162,12 @@ function insertItem(itemElement) {
     });
 }
 
-const newItem = {
-  name: "Pál utcai fiúk",
-  collectionId: 1,
-};
-
 fetchCollections();
 fetchItems();
 
-//insertCollection(newCollection);
-//insertItem(newItem);
+document
+  .getElementById("newCollButton")
+  .addEventListener("click", insertCollection);
 
 setTimeout(() => {
   loadingSpinner.style.display = "none";

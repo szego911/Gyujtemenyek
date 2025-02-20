@@ -64,7 +64,8 @@ app.post("/insertcollection", async (req, res) => {
   try {
     let newDocument = req.body;
     let result = collection.insertOne(newDocument);
-    res.send(result).status(204);
+    res.send(result).status(200);
+    res;
   } catch (e) {
     console.err(e);
   }

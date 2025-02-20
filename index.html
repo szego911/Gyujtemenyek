@@ -13,6 +13,7 @@
     <title>Gyűjtemények</title>
   </head>
   <body>
+    <!--  Navigation bar  -->
     <nav class="navbar navbar-expand-md bg-mozaik p-2">
       <div class="container-fluid fs-5">
         <a class="navbar-brand" href="/"
@@ -48,21 +49,29 @@
         </div>
       </div>
     </nav>
-
+    <!--  Hero section  -->
     <div class="hero container mt-5 mb-5">
       <h2>Üdvözöllek a Gyűjtemények oldalon</h2>
       <p class="fs-5">Böngéssz a gyűjtemények között és adj hozzá újakat!</p>
+
+      <button
+        type="button"
+        class="btn bg-mozaik text-white"
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+      >
+        Új gyűjtemény létrehozása
+      </button>
     </div>
-
-    <!-- card container -->
+    <!--  Card container  -->
     <section class="cards-container grid"></section>
-
+    <!--  Loadingspinner  -->
     <div id="loading" class="container mt-5 mb-5 text-center">
       <div class="spinner-border text-mozaik" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
-
+    <!--  Selected collection section  -->
     <section class="selected-collection grid"></section>
 
     <button

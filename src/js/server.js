@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 let db;
 
@@ -46,4 +47,56 @@ app.get("/items", (req, res) => {
     .catch((err) => {
       //res.status(500).json(err);
     });
+});
+
+const formatDate = (date) => {
+  const isoString = date.toISOString();
+  const formattedDate = isoString.split("T")[0];
+  return formattedDate;
+};
+
+//TODO: create CUD endpints
+
+// Add a new document to the collection
+app.post("/insertcollection", async (req, res) => {
+  let collection = await db.collection("collections");
+
+  try {
+    let newDocument = req.body;
+    let result = collection.insertOne(newDocument);
+    res.send(result).status(204);
+  } catch (e) {
+    console.err(e);
+  }
+});
+
+app.post("/insertitem", async (req, res) => {
+  let items = await db.collection("items");
+
+  try {
+    let newDocument = req.body;
+    let result = items.insertOne(newDocument);
+    res.send(result).status(204);
+  } catch (e) {
+    console.err(e);
+  }
+});
+
+// Update the post with a new comment
+app.patch("/updatecollection/:name", async (req, res) => {
+  const query = { _id: ObjectId(req.params.name) };
+  const updates = {
+    $push: { comments: req.body },
+  };
+  let collection = await db.collection("collections");
+  let result = await collection.updateOne(query, updates);
+  res.send(result).status(200);
+});
+
+// Delete an entry
+app.delete("/:id", async (req, res) => {
+  const query = { _id: ObjectId(req.params.id) };
+  const collection = db.collection("posts");
+  let result = await collection.deleteOne(query);
+  res.send(result).status(200);
 });

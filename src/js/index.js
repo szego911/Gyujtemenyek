@@ -1,6 +1,8 @@
 let collections = [];
 let items = [];
 
+const url = "http://localhost:8080";
+
 const cardsContainer = document.querySelector(".cards-container");
 const heroContainer = document.querySelector(".hero");
 const selectedCollectionElement = document.querySelector(
@@ -10,7 +12,7 @@ const loadingSpinner = document.getElementById("loading");
 
 async function fetchCollections() {
   try {
-    let response = await fetch("http://localhost:8080/collections");
+    let response = await fetch(url + "/collections");
     let data = await response.json();
     collections = data;
   } catch (error) {
@@ -20,7 +22,7 @@ async function fetchCollections() {
 
 async function fetchItems() {
   try {
-    let response = await fetch("http://localhost:8080/items");
+    let response = await fetch(url + "/items");
     let data = await response.json();
     items = data;
   } catch (error) {
@@ -98,8 +100,80 @@ function openCollection(collectionName) {
   selectedCollectionElement.style.display = "grid";
 }
 
+const formatDate = (date) => {
+  const isoString = date.toISOString();
+  const formattedDate = isoString.split("T")[0];
+  return formattedDate;
+};
+
+function insertCollection(collectionElement) {
+  //TODO: validate data
+  const name = collectionElement.name;
+  const theme = collectionElement.theme;
+  const date = collectionElement.date;
+
+  //console.log(collectionElement);
+
+  fetch(url + "/insertcollection", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      theme: theme,
+      date: date,
+    }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+      //document.getElementById("result").innerHTML = JSON.stringify(result);
+      // Display the API response in the "result" div
+    })
+    .catch((error) => {
+      console.error(error);
+      // Handle any errors here
+    });
+}
+
+function insertItem(itemElement) {
+  //TODO: validate data
+  const name = itemElement.name;
+  const collectionId = itemElement.collectionId;
+
+  fetch(url + "/insertitem", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      collectionId: collectionId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+      //document.getElementById("result").innerHTML = JSON.stringify(result);
+      // Display the API response in the "result" div
+    })
+    .catch((error) => {
+      console.error(error);
+      // Handle any errors here
+    });
+}
+
+const newItem = {
+  name: "Pál utcai fiúk",
+  collectionId: 1,
+};
+
 fetchCollections();
 fetchItems();
+
+//insertCollection(newCollection);
+//insertItem(newItem);
 
 setTimeout(() => {
   loadingSpinner.style.display = "none";

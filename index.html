@@ -63,6 +63,20 @@
         Új gyűjtemény létrehozása
       </button>
     </div>
+
+    <div class="collectionHero container mt-4 mb-5">
+      <h2 class="collectionNameH">CollectionName</h2>
+
+      <button
+        type="button"
+        id="newItemWindow"
+        class="btn bg-mozaik text-white"
+        data-bs-toggle="modal"
+        data-bs-target="#newItemBackdrop"
+      >
+        Új elem létrehozása
+      </button>
+    </div>
     <!--  Card container  -->
     <section class="cards-container grid"></section>
     <!--  Loadingspinner  -->
@@ -71,17 +85,10 @@
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
+
     <!--  Selected collection section  -->
     <section class="selected-collection grid"></section>
 
-    <button
-      type="button"
-      class="btn bg-mozaik text-white"
-      data-bs-toggle="modal"
-      data-bs-target="#staticBackdrop"
-    >
-      Új gyűjtemény létrehozása
-    </button>
     <!--  new collection input window -->
     <div
       class="modal fade"
@@ -131,6 +138,55 @@
                 type="date"
                 id="date"
                 class="form-control"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Bezár
+            </button>
+            <button id="newCollButton" type="button" class="btn btn-primary">
+              Létrehozás
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  new item input window -->
+    <div
+      class="modal fade"
+      id="newItemBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Új elem</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                id="name"
+                class="form-control"
+                placeholder="Cím"
+                aria-label="Username"
                 aria-describedby="basic-addon1"
               />
             </div>

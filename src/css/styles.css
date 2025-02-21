@@ -11,6 +11,12 @@ a {
 .selected-collection {
   display: none;
 }
+#newItemWindow {
+  display: none;
+}
+.collectionHero {
+  display: none;
+}
 
 .itemCard {
   max-width: 22rem;

@@ -5,10 +5,13 @@ const url = "http://localhost:8080";
 
 const cardsContainer = document.querySelector(".cards-container");
 const heroContainer = document.querySelector(".hero");
+const collectionHero = document.querySelector(".collectionHero");
 const selectedCollectionElement = document.querySelector(
   ".selected-collection"
 );
 const loadingSpinner = document.getElementById("loading");
+const collectionWindow = document.getElementById("newCollectionWindow");
+const itemWindow = document.getElementById("newItemWindow");
 
 async function fetchCollections() {
   try {
@@ -69,6 +72,7 @@ function openCollection(collectionName) {
 
   cardsContainer.style.display = "none";
   heroContainer.style.display = "none";
+  //collectionWindow.style.display = "none";
 
   items.map((item) => {
     if (item.collectionId == selectedCollectionId) {
@@ -98,13 +102,9 @@ function openCollection(collectionName) {
     }
   });
   selectedCollectionElement.style.display = "grid";
+  itemWindow.style.display = "grid";
+  collectionHero.style.display = "block";
 }
-
-const formatDate = (date) => {
-  const isoString = date.toISOString();
-  const formattedDate = isoString.split("T")[0];
-  return formattedDate;
-};
 
 export async function insertCollection() {
   //TODO: validate data

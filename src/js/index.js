@@ -2,7 +2,7 @@ let collections = [];
 let items = [];
 
 const url = "http://localhost:8080";
-
+var selectedCollectionId = -1;
 const cardsContainer = document.querySelector(".cards-container");
 const heroContainer = document.querySelector(".hero");
 const collectionHero = document.querySelector(".collectionHero");
@@ -12,6 +12,10 @@ const selectedCollectionElement = document.querySelector(
 const loadingSpinner = document.getElementById("loading");
 const collectionWindow = document.getElementById("newCollectionWindow");
 const itemWindow = document.getElementById("newItemWindow");
+const successCollectionAlert = document.getElementById(
+  "success-collection-alert"
+);
+const successItemAlert = document.getElementById("success-item-alert");
 
 async function fetchCollections() {
   try {
@@ -33,11 +37,11 @@ async function fetchItems() {
   }
 }
 
-const renderCard = () => {
+export const renderCard = () => {
   collections.map((collection) => {
     const cardElement = document.createElement("div");
     cardElement.innerHTML = `
-    <div class="card p-3">
+    <div class="card p-1 card-width">
         <img src="./src/assets/images/Diplomatico.png" class="card-img-top" alt="..."/>
         <div class="card-body">
             <h5 class="card-title">${collection.name}</h5>
@@ -49,7 +53,7 @@ const renderCard = () => {
 
     cardsContainer.appendChild(cardElement);
     const button = document.getElementById(collection.name);
-    button.addEventListener("click", () => {
+    button?.addEventListener("click", () => {
       openCollection(collection.name);
     });
   });
@@ -68,7 +72,7 @@ function openCollection(collectionName) {
   const selectedCollection = collections.find(
     (collection) => collection.name == collectionName
   );
-  const selectedCollectionId = selectedCollection.collectionId;
+  selectedCollectionId = selectedCollection.collectionId;
 
   cardsContainer.style.display = "none";
   heroContainer.style.display = "none";
@@ -77,27 +81,54 @@ function openCollection(collectionName) {
   items.map((item) => {
     if (item.collectionId == selectedCollectionId) {
       const collectionItem = document.createElement("div");
+      const updatenameID = "nameBTN" + item.name;
+      const deleteID = "deleteBTN" + item.name;
+      const moveID = "moveBTN" + item.name;
       collectionItem.innerHTML = `
     <div class="card itemCard p-3">
         <img src="./src/assets/images/Diplomatico.png" class="card-img-top" alt="..."/>
         <div class="card-body">
             <h5 class="card-title">${item.name}</h5>
-            <button id="updateBtn" class="btn btn-secondary">Szerkesztés</button>
-            <button id="deleteBtn" class="btn btn-danger">Törlés</button>
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn bg-mozaik text-white dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                >
+                Lehetőségek
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a id="${updatenameID}" class="dropdown-item updateBtn"> Átnevezés </a>
+                </li>
+                <li>
+                  <a id="${deleteID}" class="dropdown-item deleteBtn"> Törlés </a>
+                </li>
+                <li>
+                  <a id="${moveID}" class="dropdown-item moveBtn"> Áthelyezés </a>
+                </li>
+              </ul>
+            </div>
         </div>
     </div>
     `;
 
       selectedCollectionElement.appendChild(collectionItem);
 
-      const deleteBtn = document.getElementById("deleteBtn");
-      const updateBtn = document.getElementById("updateBtn");
+      const deleteBtn = document.getElementById(deleteID);
+      const updateBtn = document.getElementById(updatenameID);
+      const moveBtn = document.getElementById(moveID);
 
       deleteBtn.addEventListener("click", () => {
-        // TODO: delete item from collectionData and update the view
+        console.log("click");
+        deleteItem(item.name);
       });
       updateBtn.addEventListener("click", () => {
         // TODO: open a form for updating the item's name
+      });
+      moveBtn.addEventListener("click", () => {
+        // TODO: move
       });
     }
   });
@@ -112,6 +143,14 @@ export async function insertCollection() {
   const theme = document.getElementById("theme").value;
   const date = document.getElementById("date").value;
 
+  let collectionId = 0;
+  collections.map((collection) => {
+    if (collection.collectionId > collectionId) {
+      collectionId = collection.collectionId;
+    }
+  });
+  collectionId += 1;
+
   await fetch(url + "/insertcollection", {
     method: "POST",
     headers: {
@@ -121,25 +160,23 @@ export async function insertCollection() {
       name: name,
       theme: theme,
       date: date,
-      collectionId: 8,
+      collectionId: collectionId,
     }),
   })
     .then((response) => {
       if (response.status === 200) {
-        new Alert("Gyűjtemény sikeresen létrehozva!");
+        successCollectionAlert.style.display = "block";
+        renderCard();
       }
     })
     .catch((error) => {
       console.error(error);
-      // Handle any errors here
     });
 }
-
-export function insertItem(itemElement) {
+export function insertItem() {
   //TODO: validate data
-  const name = itemElement.name;
-  const collectionId = itemElement.collectionId;
-
+  const name = document.getElementById("itemName").value;
+  const collectionId = selectedCollectionId;
   fetch(url + "/insertitem", {
     method: "POST",
     headers: {
@@ -150,11 +187,11 @@ export function insertItem(itemElement) {
       collectionId: collectionId,
     }),
   })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
-      //document.getElementById("result").innerHTML = JSON.stringify(result);
-      // Display the API response in the "result" div
+    .then((response) => {
+      if (response.status === 200) {
+        successItemAlert.style.display = "block";
+        renderCard();
+      }
     })
     .catch((error) => {
       console.error(error);
@@ -162,12 +199,48 @@ export function insertItem(itemElement) {
     });
 }
 
+export function deleteCollection(collectionName) {
+  console.log("lefut");
+  fetch(url + "/deletecollection", {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      name: collectionName,
+    }),
+  }).then((response) => {
+    if (response.status == 200) {
+      console.log("Sikeresen törölve!");
+    }
+  });
+}
+export function deleteItem(itemName) {
+  console.log("lefut");
+  fetch(url + "/deleteitem", {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      name: itemName,
+    }),
+  }).then((response) => {
+    if (response.status == 200) {
+      console.log("Sikeresen törölve!");
+    }
+  });
+}
+
 fetchCollections();
 fetchItems();
 
 document
   .getElementById("newCollButton")
-  .addEventListener("click", insertCollection);
+  ?.addEventListener("click", insertCollection);
+
+document.getElementById("newItemButton")?.addEventListener("click", insertItem);
+document.body.addEventListener("load", renderCard);
 
 setTimeout(() => {
   loadingSpinner.style.display = "none";

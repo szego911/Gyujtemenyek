@@ -9,12 +9,17 @@
       rel="stylesheet"
       href="./bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.css"
     />
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous"
+    ></script>
     <meta name="author" content="Szegedi Bence" />
     <title>Gyűjtemények</title>
   </head>
   <body>
     <!--  Navigation bar  -->
-    <nav class="navbar navbar-expand-md bg-mozaik p-2">
+    <nav class="navbar navbar-expand-md bg-mozaik p-1" style="height: 6rem">
       <div class="container-fluid fs-5">
         <a class="navbar-brand" href="/"
           ><img class="logo" src="./src/assets/images/logo.png" alt="logo"
@@ -49,8 +54,39 @@
         </div>
       </div>
     </nav>
+    <!-- Alert  -->
+    <div
+      id="success-collection-alert"
+      class="alert alert-success alert-dismissible fade show m-3 w-75 mx-auto"
+      role="alert"
+      style="display: none"
+    >
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+
+      <strong>Siker!</strong> Új gyűjtemény létrehozva
+    </div>
+    <div
+      id="success-item-alert"
+      class="alert alert-success alert-dismissible fade show m-3 w-75 mx-auto"
+      role="alert"
+      style="display: none"
+    >
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+
+      <strong>Siker!</strong> Új elem létrehozva
+    </div>
     <!--  Hero section  -->
-    <div class="hero container mt-5 mb-5">
+    <div class="hero container mt-4 mb-3">
       <h2>Üdvözöllek a Gyűjtemények oldalon</h2>
       <p class="fs-5">Böngéssz a gyűjtemények között és adj hozzá újakat!</p>
 
@@ -150,7 +186,12 @@
             >
               Bezár
             </button>
-            <button id="newCollButton" type="button" class="btn btn-primary">
+            <button
+              id="newCollButton"
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
               Létrehozás
             </button>
           </div>
@@ -183,7 +224,7 @@
             <div class="input-group mb-3">
               <input
                 type="text"
-                id="name"
+                id="itemName"
                 class="form-control"
                 placeholder="Cím"
                 aria-label="Username"
@@ -199,23 +240,17 @@
             >
               Bezár
             </button>
-            <button id="newCollButton" type="button" class="btn btn-primary">
+            <button
+              id="newItemButton"
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
               Létrehozás
             </button>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-
-      <strong>Siker!</strong> Új gyűjtemény létrehozva
     </div>
 
     <script type="module" src="./src/js/index.js"></script>

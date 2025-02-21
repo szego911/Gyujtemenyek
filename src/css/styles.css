@@ -18,6 +18,10 @@ a {
   display: none;
 }
 
+.card-width {
+  width: 18rem;
+}
+
 .itemCard {
   max-width: 22rem;
 }

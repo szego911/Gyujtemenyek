@@ -12,6 +12,7 @@ connectToDb((err) => {
   if (!err) {
     app.listen(8080, () => {
       console.log("Connected to the database");
+      //index.renderCard();
     });
     db = getDb();
   }
@@ -49,15 +50,8 @@ app.get("/items", (req, res) => {
     });
 });
 
-const formatDate = (date) => {
-  const isoString = date.toISOString();
-  const formattedDate = isoString.split("T")[0];
-  return formattedDate;
-};
+//TODO: create UD endpoints
 
-//TODO: create CUD endpints
-
-// Add a new document to the collection
 app.post("/insertcollection", async (req, res) => {
   let collection = await db.collection("collections");
 
@@ -65,7 +59,6 @@ app.post("/insertcollection", async (req, res) => {
     let newDocument = req.body;
     let result = collection.insertOne(newDocument);
     res.send(result).status(200);
-    res;
   } catch (e) {
     console.err(e);
   }
@@ -77,7 +70,7 @@ app.post("/insertitem", async (req, res) => {
   try {
     let newDocument = req.body;
     let result = items.insertOne(newDocument);
-    res.send(result).status(204);
+    res.send(result).status(200);
   } catch (e) {
     console.err(e);
   }
@@ -95,9 +88,9 @@ app.patch("/updatecollection/:name", async (req, res) => {
 });
 
 // Delete an entry
-app.delete("/:id", async (req, res) => {
-  const query = { _id: ObjectId(req.params.id) };
-  const collection = db.collection("posts");
-  let result = await collection.deleteOne(query);
+app.delete("/deleteitem", async (req, res) => {
+  const name = req.body.name;
+  const collection = db.collection("items");
+  let result = await collection.deleteOne({ name: name });
   res.send(result).status(200);
 });

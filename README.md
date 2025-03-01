@@ -4,9 +4,9 @@
 
 ### Indítás lépsei:
 
-Telepítjuk a nodemon-t, ami automatikusan újra indítja az applikációt változás esetén.
+Első sorban, ha nincs Nodejs telepítve :), akkor azt innen tudjuk megtenni: https://nodejs.org/en , majd a mappa elérési útvonalát a környezeti változókhoz adjuk.
 
-> Terminálba beírjuk `npm install nodemon`
+Terminálba beírjuk az `npm install` parancsot.
 
 Telepítjuk a Live Server kiegészítést Visual Studio Codeban
 

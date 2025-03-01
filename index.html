@@ -54,7 +54,7 @@
         </div>
       </div>
     </nav>
-    <!-- Alert  -->
+    <!-- Alerts  -->
     <div
       id="success-collection-alert"
       class="alert alert-success alert-dismissible fade show m-3 w-75 mx-auto"
@@ -85,6 +85,66 @@
 
       <strong>Siker!</strong> Új elem létrehozva
     </div>
+    <div
+      id="success-renameColl-alert"
+      class="alert alert-success alert-dismissible fade show m-3 w-75 mx-auto"
+      role="alert"
+      style="display: none"
+    >
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+
+      <strong>Siker!</strong> Gyüjtemény átnevezve.
+    </div>
+    <div
+      id="success-renameItem-alert"
+      class="alert alert-success alert-dismissible fade show m-3 w-75 mx-auto"
+      role="alert"
+      style="display: none"
+    >
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+
+      <strong>Siker!</strong> Elem átnevezve.
+    </div>
+    <div
+      id="success-delete-item-alert"
+      class="alert alert-success alert-dismissible fade show m-3 w-75 mx-auto"
+      role="alert"
+      style="display: none"
+    >
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+
+      <strong>Siker!</strong> Elem törölve.
+    </div>
+    <div
+      id="success-move-item-alert"
+      class="alert alert-success alert-dismissible fade show m-3 w-75 mx-auto"
+      role="alert"
+      style="display: none"
+    >
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+
+      <strong>Siker!</strong> Elem áthelyezve.
+    </div>
     <!--  Hero section  -->
     <div class="hero container mt-4 mb-3">
       <h2>Üdvözöllek a Gyűjtemények oldalon</h2>
@@ -101,7 +161,7 @@
     </div>
 
     <div class="collectionHero container mt-4 mb-5">
-      <h2 class="collectionNameH">CollectionName</h2>
+      <h2 id="collectionNameH" class="collectionNameH mb-3"></h2>
 
       <button
         type="button"
@@ -247,6 +307,110 @@
               data-bs-dismiss="modal"
             >
               Létrehozás
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--   rename Collection window-->
+    <div
+      class="modal fade"
+      id="renameCollDialog"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="reNameModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="reNameModalLabel"></h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                id="newCollName"
+                class="form-control"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Bezár
+            </button>
+            <button
+              id="renameCollButton"
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Átnevezés
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--   rename Item window-->
+    <div
+      class="modal fade"
+      id="reNameItemDialog"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="reNameItemModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="reNameItemModalLabel"></h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                id="newItemName"
+                class="form-control"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Bezár
+            </button>
+            <button
+              id="renameItemButton"
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Átnevezés
             </button>
           </div>
         </div>

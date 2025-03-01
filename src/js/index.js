@@ -88,6 +88,25 @@ function renameItemDialog(itemName) {
   $("#reNameItemDialog").modal("show");
 }
 
+function moveItemDialog(itemName) {
+  $("#moveItemModalLabel").html(itemName + " áthelyezése");
+  let collections = JSON.parse(localStorage.getItem("collections"));
+  var select = document.getElementById("select");
+
+  var selectList = document.createElement("select");
+  selectList.setAttribute("id", "selectCollection");
+  selectList.setAttribute("class", "form-select");
+  select.appendChild(selectList);
+
+  collections.map((collection) => {
+    var option = document.createElement("option");
+    option.setAttribute("value", collection.name);
+    option.text = collection.name;
+    selectList.appendChild(option);
+  });
+  $("#moveItemDialog").modal("show");
+}
+
 async function renameCollection() {
   const label = document.getElementById("reNameModalLabel").innerHTML;
   const myArray = label.split(" ");
@@ -99,6 +118,7 @@ async function renameCollection() {
       collectionId = collection._id;
     }
   });
+
   const newName = $("#newCollName").val();
 
   if (newName !== "" && typeof newName === "string") {
@@ -122,6 +142,8 @@ async function renameCollection() {
       .catch((error) => {
         console.error(error);
       });
+  } else {
+    alert("Mindeképp adj meg adatot!");
   }
 }
 
@@ -155,6 +177,59 @@ async function renameItem() {
         if (response.status === 200) {
           renderCard();
           renameItemAlert.style.display = "block";
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  } else {
+    alert("Adj meg mindenképp adatot!");
+  }
+}
+
+async function moveItem() {
+  const label = document.getElementById("moveItemModalLabel").innerHTML;
+  const myArray = label.split(" ");
+  let itemName = myArray[0];
+  let itemId = "";
+  let items = JSON.parse(localStorage.getItem("items"));
+
+  items.map((item) => {
+    if (item.name === itemName) {
+      itemId = item._id;
+    }
+  });
+
+  const selectedCollection = $("#selectCollection option:selected").text();
+
+  let selectedCollectionID = 0;
+  let collections = JSON.parse(localStorage.getItem("collections"));
+  collections.map((collection) => {
+    if (selectedCollection == collection.name) {
+      selectedCollectionID = collection.collectionId;
+    }
+  });
+
+  if (
+    selectedCollection !== "" &&
+    typeof selectedCollection === "string" &&
+    selectedCollectionID !== 0
+  ) {
+    await fetch(url + "/move/item", {
+      method: "PATCH",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        itemId: itemId,
+        collectionId: selectedCollectionID,
+      }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          renderCard();
+          moveItemAlert.style.display = "block";
         }
       })
       .catch((error) => {
@@ -226,7 +301,7 @@ function openCollection(collectionName) {
         renameItemDialog(item.name);
       });
       moveBtn.addEventListener("click", () => {
-        // TODO: move
+        moveItemDialog(item.name);
       });
     }
   });
@@ -241,9 +316,11 @@ export async function insertCollection() {
   const date = document.getElementById("date").value;
 
   if (
-    (name !== "" || theme !== "" || date !== "") &&
-    typeof name !== "string" &&
-    typeof theme !== "string"
+    name !== "" &&
+    theme !== "" &&
+    date !== "" &&
+    typeof name === "string" &&
+    typeof theme === "string"
   ) {
     let collectionId = 0;
     let collections = JSON.parse(localStorage.getItem("collections"));
@@ -268,8 +345,9 @@ export async function insertCollection() {
     })
       .then((response) => {
         if (response.status === 200) {
-          renderCard();
           successCollectionAlert.style.display = "block";
+          fetchCollections();
+          renderCard();
         }
       })
       .catch((error) => {
@@ -348,6 +426,7 @@ document
   ?.addEventListener("click", insertCollection);
 
 document.getElementById("newItemButton")?.addEventListener("click", insertItem);
+document.getElementById("moveItemButton")?.addEventListener("click", moveItem);
 document
   .getElementById("renameCollButton")
   ?.addEventListener("click", renameCollection);
@@ -360,3 +439,9 @@ setTimeout(() => {
   loadingSpinner.style.display = "none";
   renderCard();
 }, 600);
+
+document.addEventListener("hidden.bs.modal", function (event) {
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
+});

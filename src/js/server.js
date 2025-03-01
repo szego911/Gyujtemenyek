@@ -8,7 +8,6 @@ app.use(cors());
 app.use(express.json());
 
 let db;
-const url = "http://localhost:8080";
 
 connectToDb((err) => {
   if (!err) {
@@ -82,7 +81,7 @@ app.patch("/update/collection", async (req, res) => {
   };
   let collection = await db.collection("collections");
   let result = await collection.updateOne(query, updates);
-  res.status(200);
+  res.send(result).status(200);
 });
 
 app.patch("/update/item", async (req, res) => {
@@ -93,7 +92,18 @@ app.patch("/update/item", async (req, res) => {
 
   let collection = await db.collection("items");
   let result = await collection.updateOne(query, updates);
-  res.status(200);
+  res.send(result).status(200);
+});
+
+app.patch("/move/item", async (req, res) => {
+  const query = { _id: new ObjectId(req.body.itemId) };
+  const updates = {
+    $set: { collectionId: req.body.collectionId },
+  };
+
+  let collection = await db.collection("items");
+  let result = await collection.updateOne(query, updates);
+  res.send(result).status(200);
 });
 
 app.delete("/delete/item", async (req, res) => {

@@ -175,8 +175,11 @@ async function renameItem() {
     })
       .then((response) => {
         if (response.status === 200) {
-          renderCard();
-          renameItemAlert.style.display = "block";
+          fetchItems();
+          const collectionName = localStorage.getItem("openedCollectionName");
+          selectedCollectionElement.innerHTML = "";
+          setTimeout(() => openCollection(collectionName), 500);
+          setTimeout(() => (successItemAlert.style.display = "block"), 300);
         }
       })
       .catch((error) => {
@@ -228,8 +231,11 @@ async function moveItem() {
     })
       .then((response) => {
         if (response.status === 200) {
-          renderCard();
-          moveItemAlert.style.display = "block";
+          fetchItems();
+          const collectionName = localStorage.getItem("openedCollectionName");
+          selectedCollectionElement.innerHTML = "";
+          setTimeout(() => openCollection(collectionName), 700);
+          setTimeout(() => (moveItemAlert.style.display = "block"), 300);
         }
       })
       .catch((error) => {
@@ -239,6 +245,7 @@ async function moveItem() {
 }
 
 function openCollection(collectionName) {
+  localStorage.setItem("openedCollectionName", collectionName);
   let collections = JSON.parse(localStorage.getItem("collections"));
   const selectedCollection = collections.find(
     (collection) => collection.name == collectionName
@@ -345,9 +352,13 @@ export async function insertCollection() {
     })
       .then((response) => {
         if (response.status === 200) {
-          successCollectionAlert.style.display = "block";
           fetchCollections();
-          renderCard();
+          cardsContainer.innerHTML = "";
+          setTimeout(() => renderCard(), 600);
+          setTimeout(
+            () => (successCollectionAlert.style.display = "block"),
+            300
+          );
         }
       })
       .catch((error) => {
@@ -373,8 +384,11 @@ export function insertItem() {
     })
       .then((response) => {
         if (response.status === 200) {
-          renderCard();
-          successItemAlert.style.display = "block";
+          fetchItems();
+          const collectionName = localStorage.getItem("openedCollectionName");
+          selectedCollectionElement.innerHTML = "";
+          setTimeout(() => openCollection(collectionName), 700);
+          setTimeout(() => (successItemAlert.style.display = "block"), 300);
         }
       })
       .catch((error) => {
@@ -412,8 +426,11 @@ export function deleteItem(itemName) {
     }),
   }).then((response) => {
     if (response.status == 200) {
-      renderCard();
-      successDeleteItemAlert.style.display = "block";
+      fetchItems();
+      const collectionName = localStorage.getItem("openedCollectionName");
+      selectedCollectionElement.innerHTML = "";
+      setTimeout(() => openCollection(collectionName), 500);
+      setTimeout(() => (successDeleteItemAlert.style.display = "block"), 300);
     }
   });
 }

@@ -14,7 +14,7 @@ Telepítjuk a Live Server kiegészítést Visual Studio Codeban
 
 Elindítjuk az adatbázis szervert, ami lekéri az adatokat MongoDB-ből.
 
-> Terminálba beírjuk `nodemon src/js/server.js`
+> Terminálba beírjuk `npm start`
 
 Elindítjuk magát a weboldalt.
 

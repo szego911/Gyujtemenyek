@@ -2,7 +2,7 @@
 
 ##### Készítette: Szegedi Bence
 
-### Indítás lépsei:
+### Indítás lépései:
 
 Első sorban, ha nincs Nodejs telepítve :), akkor azt innen tudjuk megtenni: https://nodejs.org/en , majd a mappa elérési útvonalát a környezeti változókhoz adjuk.
 
